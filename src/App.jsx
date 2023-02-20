@@ -3,11 +3,13 @@ import "./App.css";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
-
+import Map, {Mapox} from './Map'
 import "leaflet/dist/leaflet.css";
 
 import { GeoJSON, LayersControl } from "react-leaflet";
 import L from "leaflet";
+
+
 
 const Buttons = ({ fetchBufferPolygon, markerPosition }) => {
   const map = useMap();
@@ -146,6 +148,7 @@ const App = () => {
         ></Buttons>
         
       </MapContainer>
+      <Map/>
     </div>
   );
 };

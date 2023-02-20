@@ -67,6 +67,7 @@ const App = () => {
     []
   );
   const fetchBufferPolygon = async () => {
+    console.log('fecthcing......')
     const data = await fetch(
       `http://127.0.0.1:8000/building/?lat=${markerPosition.lat}&lng=${markerPosition.lng}&buffer_distance=100`
     );
@@ -112,6 +113,12 @@ const App = () => {
     setViewport(viewport);
   }
   const { bounds } = viewport;
+  useEffect(()=>{
+    
+    setAnalysisResult(null)
+    fetchBufferPolygon()
+    console.log('userffect run')
+  },[markerPosition])
   return (
     <div>
       <MapContainer center={markerPosition} zoom={zoom}>
@@ -130,11 +137,14 @@ const App = () => {
             <span>'Drag this Marker to locate Disaster'</span>
           </Popup>
         </Marker>
-        {polygon}
+        {analysisResult && (
+        <GeoJSON data={analysisResult} onEachFeature={onEachFeature} />
+      )}
         <Buttons
           fetchBufferPolygon={fetchBufferPolygon}
           markerPosition={markerPosition}
         ></Buttons>
+        
       </MapContainer>
     </div>
   );

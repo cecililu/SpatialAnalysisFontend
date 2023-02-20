@@ -23,7 +23,10 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+.top-component {
+  position: relative;
+  z-index: 9999;
+}
 .App-link {
   color: #61dafb;
 }

@@ -43,3 +43,32 @@
   width: 100wh; 
   height: 100vh;
 }
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  
+}
+
+.arrow-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+ 
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.arrow-down {
+  display: block;
+  width: 10;
+  height:10;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #fff;
+}
+

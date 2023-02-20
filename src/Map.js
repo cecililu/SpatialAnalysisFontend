@@ -32,7 +32,10 @@ const Map = () => {
     return () => map.remove();
   }, []);
 
-  return <div ref={mapContainer} className="mapContainer" />;
+  return <>
+  <div  style={{height: '700px'}} ref={mapContainer} className="mapContainer" />;
+  <div id='lowmap'></div>
+</>
 };
 
 export default Map;

@@ -8,6 +8,7 @@ import "leaflet/dist/leaflet.css";
 
 import { GeoJSON, LayersControl } from "react-leaflet";
 import L from "leaflet";
+import { Mapgl } from "./Mapgl";
 
 
 
@@ -155,7 +156,8 @@ const App = () => {
         <span className="arrow-down"></span>
       </a>
     </div>
-      <Map/>
+      {/* <Map/> */}
+      <Mapgl/>
     </div>
   );
 };

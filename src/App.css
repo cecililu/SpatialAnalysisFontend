@@ -72,3 +72,7 @@
   border-top: 10px solid #fff;
 }
 
+.mapboxgl-canvas {
+  position: fixed !important;
+  height: 100% !important;
+}

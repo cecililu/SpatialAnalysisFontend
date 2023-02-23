@@ -9,6 +9,7 @@ import "leaflet/dist/leaflet.css";
 import { GeoJSON, LayersControl } from "react-leaflet";
 import L from "leaflet";
 import { Mapgl } from "./Mapgl";
+import { Drar } from "./drar";
 
 
 
@@ -97,7 +98,7 @@ const App = () => {
       feature.properties.amenities == "place_of_worship" ? "blue" : "red";
     var fillcolor =
       feature.properties.amenities == "place_of_worship" ? "blue" : "";
-
+      
     layer.setStyle({
       fillColor: fillcolor,
       color: color,
@@ -157,7 +158,10 @@ const App = () => {
       </a>
     </div>
       {/* <Map/> */}
-      <Mapgl/>
+      {/* <Mapgl/> */}
+
+      {/* draw featues  */}
+      <Drar/>
     </div>
   );
 };

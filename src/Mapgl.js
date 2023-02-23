@@ -31,7 +31,7 @@ export function Mapgl() {
             .coordinates[0]
 
             }>
-              <div style={{color:'red'}}>Skatenow</div>
+              <div className="marker-btn" style={{color:'red'}}>Skatenow</div>
             </Marker>
           );
         })}

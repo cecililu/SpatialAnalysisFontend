@@ -76,3 +76,11 @@
   position: fixed !important;
   height: 100% !important;
 }
+
+marker-btn{
+  
+  background: 'red';
+  width: 20px;
+  height: 20px;
+  
+}

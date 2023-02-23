@@ -1,6 +1,6 @@
 
 
-import { LayerGroup, LayersControl, MapContainer, Marker, TileLayer ,GeoJSON} from "react-leaflet";
+import { LayerGroup, LayersControl, MapContainer, Marker, TileLayer ,GeoJSON, FeatureGroup} from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
@@ -11,62 +11,68 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 
 import "leaflet-draw";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 
 export function Drar() {
-  const [layers, setLayers] = useState([]);
-
-  function onCreated(e) {
-    const layer = e.layer;
-    setLayers((prevLayers) => [...prevLayers, layer]);
+    const featureGroupRef = useRef();
+    const [polygonCoords, setPolygonCoords] = useState([]);
+  
+    function onCreated(e) {
+      const layer = e.layer;
+      featureGroupRef.current.addLayer(layer);
+  
+      const latLngs = layer.getLatLngs()[0];
+      const coords = latLngs.map(({ lat, lng }) => [lat, lng]);
+  
+      setPolygonCoords(coords);
+      console.log("Polygon coordinates:", coords);
+    }
+    function onEdited(e) {
+        const layers = e.layers;
+        layers.eachLayer((layer) => {
+          const latLngs = layer.getLatLngs()[0];
+          const coords = latLngs.map(({ lat, lng }) => [lat, lng]);
+          console.log("New polygon coordinates:", coords);
+        });
+      
+        const featureGroup = featureGroupRef.current;
+        const layersArray = featureGroup.getLayers();
+        const coordsArray = layersArray.map((layer) => {
+          const latLngs = layer.getLatLngs()[0];
+          return latLngs.map(({ lat, lng }) => [lat, lng]);
+        });
+      
+        const flattenedCoords = coordsArray.flat();
+        setPolygonCoords(flattenedCoords);
+      }
+  
+    return (
+      <MapContainer center={[51.505, -0.09]} zoom={13}>
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <FeatureGroup ref={featureGroupRef}>
+          <EditControl
+            position="topright"
+            onCreated={onCreated}
+            onEdited={onEdited}
+            draw={{
+              circle: false,
+              rectangle: false,
+              marker: false,
+            }}
+            featureGroup={featureGroupRef.current}
+          />
+        </FeatureGroup>
+        {polygonCoords.length > 0 && (
+          <div  className="my-container" style={{zIndex:9999}}>
+            <h3>Polygon Coordinates:</h3>
+            <ul>
+              {polygonCoords.map((coord, index) => (
+                <li key={index}>{`[${coord.join(", ")}]`}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </MapContainer>
+    );
   }
-
- function onEdited(e) {
-    const layers = e.layers.getLayers();
-    setLayers(layers);
-  }
-
-  return (
-    <MapContainer center={[51.505, -0.09]} zoom={13}>
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <EditControl
-        position="topright"
-        onCreated={onCreated}
-        onEdited={onEdited}
-        draw={{
-          polyline: {
-            shapeOptions: {
-              color: "#f357a1",
-              weight: 10,
-            },
-          },
-          polygon: {
-            allowIntersection: false,
-            drawError: {
-              color: "#e1e100",
-              message: "<strong>Oh snap!<strong> you can't draw that!",
-            },
-            shapeOptions: {
-              color: "#bada55",
-            },
-          },
-          circle: false,
-          rectangle: false,
-          marker: {
-            icon: new L.Icon.Default(),
-          },
-        }}
-      />
-      {layers.map((layer, index) => (
-        <LayerGroup key={index}>
-          {layer instanceof L.Marker ? (
-            <Marker position={layer.getLatLng()} />
-          ) : (
-            <GeoJSON data={layer.toGeoJSON()} />
-          )}
-        </LayerGroup>
-      ))}
-    </MapContainer>
-  );
-}

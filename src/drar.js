@@ -13,7 +13,7 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import "leaflet-draw";
 import { useRef, useState } from "react";
 
-
+import wk from 'wellknown';
 export function Drar() {
    
     const featureGroupRef = useRef();
@@ -23,32 +23,45 @@ export function Drar() {
     console.log('yo',polygonCoords)
     
     function onCreated(e) {
-      const layer = e.layer;
-      featureGroupRef.current.addLayer(layer);
-  
-      const latLngs = layer.getLatLngs()[0];
-      const coords = latLngs.map(({ lat, lng }) => [lat, lng]);
-  
-      setPolygonCoords(coords);
-      console.log("Polygon coordinates:", coords);
-    }
-    function onEdited(e) {
-        const layers = e.layers;
-        layers.eachLayer((layer) => {
-          const latLngs = layer.getLatLngs()[0];
-          const coords = latLngs.map(({ lat, lng }) => [lat, lng]);
-          console.log("New polygon coordinates:", coords);
+        const layer = e.layer;
+        featureGroupRef.current.addLayer(layer);
+      
+        const latLngs = layer.getLatLngs()[0];
+        const coords = latLngs.map(({ lat, lng }) => [lng, lat]);
+      
+        // Convert coordinates to a Polygon and then to WKT
+        const polygonWkt = wk.stringify({
+          type: 'Polygon',
+          coordinates: [coords]
         });
       
-        const featureGroup = featureGroupRef.current;
-        const layersArray = featureGroup.getLayers();
-        const coordsArray = layersArray.map((layer) => {
-          const latLngs = layer.getLatLngs()[0];
-          return latLngs.map(({ lat, lng }) => [lat, lng]);
-        });
+        setPolygonCoords(polygonWkt);
+        console.log("Polygon WKT:", polygonWkt);
+      }
       
-        const flattenedCoords = coordsArray.flat();
-        setPolygonCoords(flattenedCoords);
+      function onEdited(e) {
+          const layers = e.layers;
+          layers.eachLayer((layer) => {
+            const latLngs = layer.getLatLngs()[0];
+            const coords = latLngs.map(({ lat, lng }) => [lng, lat]);
+            console.log("New polygon coordinates:", coords);
+          });
+        
+          const featureGroup = featureGroupRef.current;
+          const layersArray = featureGroup.getLayers();
+          const coordsArray = layersArray.map((layer) => {
+            const latLngs = layer.getLatLngs()[0];
+            return latLngs.map(({ lat, lng }) => [lng, lat]);
+          });
+        
+          // Convert coordinates to a MultiPolygon and then to WKT
+          const multiPolygonWkt = wk.stringify({
+            type: 'MultiPolygon',
+            coordinates: [coordsArray]
+          });
+      
+          setPolygonCoords(multiPolygonWkt);
+          console.log("Polygon WKT:", multiPolygonWkt);
       }
   
     return (
@@ -67,16 +80,8 @@ export function Drar() {
             featureGroup={featureGroupRef.current}
           />
         </FeatureGroup>
-        {polygonCoords.length > 0 && (
-          <div  className="my-container" style={{zIndex:9999}}>
-            <h3>Polygon Coordinates:</h3>
-            <ul>
-              {polygonCoords.map((coord, index) => (
-                <li key={index}>{`[${coord.join(", ")}]`}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <div className="my-container">{polygonCoords?polygonCoords:""}
+        </div>
       </MapContainer>
     );
   }

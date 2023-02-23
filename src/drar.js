@@ -15,9 +15,13 @@ import { useRef, useState } from "react";
 
 
 export function Drar() {
+   
     const featureGroupRef = useRef();
     const [polygonCoords, setPolygonCoords] = useState([]);
-  
+    
+    console.log(featureGroupRef,'my REF')
+    console.log('yo',polygonCoords)
+    
     function onCreated(e) {
       const layer = e.layer;
       featureGroupRef.current.addLayer(layer);
@@ -48,7 +52,7 @@ export function Drar() {
       }
   
     return (
-      <MapContainer center={[51.505, -0.09]} zoom={13}>
+      <MapContainer center={[27.6588, 85.3247]} zoom={13}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <FeatureGroup ref={featureGroupRef}>
           <EditControl

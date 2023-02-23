@@ -161,7 +161,14 @@ const App = () => {
       {/* <Mapgl/> */}
 
       {/* draw featues  */}
-      <Drar/>
+      <div className="grid grid-cols-4 ">
+          <div className="col-span-2">
+            <Drar/>
+          </div>
+          <div className="col-span-2">
+            <center>Add data panel</center>
+          </div>
+      </div>
     </div>
   );
 };

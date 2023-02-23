@@ -16,6 +16,34 @@ import { useRef, useState } from "react";
 import wk from 'wellknown';
 export function Drar() {
    
+   
+    async function postPolygonData() {
+        const polygonData = {
+          way: polygonCoords,
+          building: 'yes'
+        };
+        
+        try {
+          const response = await fetch('https://example.com/endpoint', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(polygonData)
+          });
+          
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          
+          const data = await response.json();
+          console.log(data);
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+
+   
     const featureGroupRef = useRef();
     const [polygonCoords, setPolygonCoords] = useState([]);
     
@@ -56,7 +84,7 @@ export function Drar() {
         
           // Convert coordinates to a MultiPolygon and then to WKT
           const multiPolygonWkt = wk.stringify({
-            type: 'MultiPolygon',
+            type: 'Polygon',
             coordinates: [coordsArray]
           });
       
@@ -81,6 +109,8 @@ export function Drar() {
           />
         </FeatureGroup>
         <div className="my-container">{polygonCoords?polygonCoords:""}
+        </div> <div className="my-container">
+            <button onClick={postPolygonData}>Add data</button>
         </div>
       </MapContainer>
     );

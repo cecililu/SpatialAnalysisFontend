@@ -19,12 +19,14 @@ export function Drar() {
    
     async function postPolygonData() {
         const polygonData = {
-          way: polygonCoords,
-          building: 'yes'
+          osm_id:1233,
+          way: `${polygonCoords}`,
+          building: "yes"
         };
         
         try {
-          const response = await fetch('https://example.com/endpoint', {
+            console.log('Posting---data')
+          const response = await fetch('http://127.0.0.1:8000/newdata/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -109,8 +111,11 @@ export function Drar() {
           />
         </FeatureGroup>
         <div className="my-container">{polygonCoords?polygonCoords:""}
-        </div> <div className="my-container">
-            <button onClick={postPolygonData}>Add data</button>
+        </div>
+        <br/>
+        <br/>
+         <div className="my-container">
+            <button style={{background:'red',color:'white',padding:'10px'}}onClick={postPolygonData}>Add data</button>
         </div>
       </MapContainer>
     );

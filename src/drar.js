@@ -37,7 +37,7 @@ export function Drar() {
    
   async function postPolygonData() {
     const polygonData = {
-      osm_id: 1233,
+      osm_id: 12111183,
       way: `${polygonCoords}`,
       building: "yes",
     };

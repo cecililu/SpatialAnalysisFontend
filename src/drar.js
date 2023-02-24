@@ -32,6 +32,7 @@ export function Drar() {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(polygonData)
+            
           });
           
           if (!response.ok) {
@@ -40,6 +41,7 @@ export function Drar() {
           
           const data = await response.json();
           console.log(data);
+           onDelete()
         } catch (error) {
           console.error('Error:', error);
         }
@@ -93,6 +95,12 @@ export function Drar() {
           setPolygonCoords(multiPolygonWkt);
           console.log("Polygon WKT:", multiPolygonWkt);
       }
+      function onDelete() {
+        const featureGroup = featureGroupRef.current;
+        featureGroup.clearLayers();
+        setPolygonCoords(null);
+    }
+
   
     return (
       <MapContainer center={[27.6588, 85.3247]} zoom={13}>

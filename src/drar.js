@@ -26,6 +26,8 @@ export function Drar() {
     address: "",
     phone1: "",
     phone2: "",
+    people:'',
+    osm_id:''
   });
 
   console.log("FORM DATA", formData);
@@ -37,7 +39,7 @@ export function Drar() {
    
   async function postPolygonData() {
     const polygonData = {
-      osm_id: 12111183,
+    
       way: `${polygonCoords}`,
       building: "yes",
     };
@@ -194,6 +196,32 @@ export function Drar() {
               type="text"
               name="phone2"
               id="phone2"
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="people" className="block mb-2 font-bold">
+             people
+            </label>
+            <input
+              type="text"
+              name="people"
+              id="people"
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+
+
+          <div className="mb-4">
+            <label htmlFor="osm_id" className="block mb-2 font-bold">
+             OSM-ID
+            </label>
+            <input
+              type="text"
+              name="osm_id"
+              id="osm_id"
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded"
             />

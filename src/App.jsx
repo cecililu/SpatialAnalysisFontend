@@ -10,6 +10,7 @@ import { GeoJSON, LayersControl } from "react-leaflet";
 import L from "leaflet";
 import { Mapgl } from "./Mapgl";
 import { Drar } from "./drar";
+import Form from "./Form";
 
 
 
@@ -167,6 +168,7 @@ const App = () => {
           </div>
           <div className="col-span-2">
             <center>Add data panel</center>
+            <Form/>
           </div>
       </div>
     </div>

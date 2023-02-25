@@ -19,6 +19,7 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import "leaflet-draw";
 import { useRef, useState } from "react";
 
+
 import wk from "wellknown";
 export function Drar() {
   const [formData, setFormData] = useState({
@@ -29,6 +30,9 @@ export function Drar() {
     people:'',
     osm_id:''
   });
+ 
+
+  const [Editmode, setEditmode] = useState(0)
 
   console.log("FORM DATA", formData);
 
@@ -121,9 +125,12 @@ export function Drar() {
   }
 
   return (
+    <> 
+    <button className={Editmode?"bg-green-700 text-white p-1":"p-1 bg-red-700 text-white"} onClick={()=>setEditmode(!Editmode)}>{Editmode?"Edit mode enable":"Edit mode disable"}</button>
     <div className="grid grid-cols-4 ">
+     
       <div className="col-span-2">
-        <MapContainer center={[27.6588, 85.3247]} zoom={13}>
+        <MapContainer center={[27.6588, 85.3247]} zoom={16}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <FeatureGroup ref={featureGroupRef}>
             <EditControl
@@ -239,5 +246,6 @@ export function Drar() {
         </center>
       </div>
     </div>
+    </>
   );
 }

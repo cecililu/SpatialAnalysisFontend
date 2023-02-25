@@ -21,6 +21,7 @@ import { useEffect, useRef, useState } from "react";
 
 
 import wk from "wellknown";
+import { click } from "@testing-library/user-event/dist/click";
 export function Drar() {
   const [formData, setFormData] = useState({
     house_metric_number: "",
@@ -30,9 +31,10 @@ export function Drar() {
     people:'',
     osm_id:''
   });
- 
 
   const [Editmode, setEditmode] = useState(0)
+  // const [currentbuilding,setCurrentBuilding]=useState(null)
+
 
   console.log("FORM DATA", formData);
 
@@ -132,6 +134,16 @@ const fetchBufferPolygon = async () => {
     const affectedBuilding = await data.json();
     setAnalysisResult(affectedBuilding);
   };
+const [currentbuildingData, setcurrentbuildingData] = useState()
+  const getCurrentBuildingdata = async (osm) => {
+    console.log('fecthcing......building info data ')
+    console.log(osm,'is this null')
+    const data = await fetch(
+      `http://127.0.0.1:8000/buildinginfo/?osm_id=${osm}`
+    );
+    const currentBuilding = await data.json();
+    setcurrentbuildingData(currentBuilding[0]);
+  };
 useEffect(()=>{
   if (Editmode&& !analysisResult){  
     fetchBufferPolygon()}
@@ -165,7 +177,22 @@ useEffect(()=>{
       fillOpacity: 0.7,
     });
     layer.bindPopup(createPopupContent(feature));
+  
+    layer.on('click', function(e) {
+      console.log('clicked-->',feature.properties.osm_id)
+      // setCurrentBuilding(feature.properties.osm_id);
+      // console.log(currentbuilding,currentbuildingData)
+      getCurrentBuildingdata(feature.properties.osm_id)
+      console.log(getCurrentBuildingdata)
+    });
+  
+  
   }
+
+  useEffect(()=>{
+    if (currentbuildingData) setFormData(currentbuildingData) 
+   },[currentbuildingData])
+  console.log(currentbuildingData,'<-----cuuren byuldin data')
   return (
     <> 
     <button className={Editmode?"bg-green-700 text-white p-1 pr-2":"p-1 bg-red-700 text-white"} onClick={()=>setEditmode(!Editmode)}>{Editmode?"Edit mode enable":"Edit mode disable"}</button>
@@ -214,6 +241,7 @@ useEffect(()=>{
               id="house_metric_number"
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded"
+              value={formData.house_metric_number}
             />
           </div>
           <div className="mb-4">
@@ -226,6 +254,7 @@ useEffect(()=>{
               id="address"
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded"
+              value={formData.address}
             />
           </div>
           <div className="mb-4">
@@ -238,6 +267,7 @@ useEffect(()=>{
               id="phone1"
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded"
+              value={formData.phone1}
             />
           </div>
           <div className="mb-4">
@@ -250,6 +280,7 @@ useEffect(()=>{
               id="phone2"
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded"
+              value={formData.phone2}
             />
           </div>
           <div className="mb-4">
@@ -262,6 +293,7 @@ useEffect(()=>{
               id="people"
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded"
+              value={formData.building}
             />
           </div>
 
@@ -276,6 +308,7 @@ useEffect(()=>{
               id="osm_id"
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded"
+              value={formData.osm_id}
             />
           </div>
         </form>

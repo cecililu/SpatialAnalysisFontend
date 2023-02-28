@@ -163,7 +163,7 @@ useEffect(()=>{
       "</p>"
     );
   }
-
+var prev= '';
   function onEachFeature(feature, layer) {
     var color =
       feature.properties.amenities == "place_of_worship" ? "blue" : "red";
@@ -176,14 +176,38 @@ useEffect(()=>{
       weight: 1,
       fillOpacity: 0.7,
     });
+
     layer.bindPopup(createPopupContent(feature));
-  
+   
     layer.on('click', function(e) {
-      console.log('clicked-->',feature.properties.osm_id)
+      console.log('9999999999999999999')
+      // console.log(layer)
+      // console.log(prevlayer,'i am prev layer------------------')
+      console.log('898989898989',prev)
+      if (prev) {
+        // console.log(prevlayer,'i am prev layer')
+        prev.setStyle({
+        fillColor: 'red',
+        color: 'red',
+        weight: 1,
+        fillOpacity: 0.7,
+      })}
+      layer.setStyle({
+        fillColor: 'blue',
+        color: 'blue',
+        weight: 1,
+        fillOpacity: 0.7,
+      });
+      
+      // console.log('clicked-->',feature.properties.osm_id)
       // setCurrentBuilding(feature.properties.osm_id);
       // console.log(currentbuilding,currentbuildingData)
+      setcurrentbuildingData({})
       getCurrentBuildingdata(feature.properties.osm_id)
       console.log(getCurrentBuildingdata)
+      // setprevlayer(layer)
+      prev=layer
+      // console.log('I ama prev layer',prevlayer,layer)
     });
   
   
